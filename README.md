@@ -1,2 +1,2 @@
-# ccprog1-machine-project
-lost cavern
+# lost cavern
+machine project [a.y. 2025-26]

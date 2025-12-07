@@ -231,7 +231,7 @@ int starting_screen(){
 
     displayTitle();
 
-    while (1) { 
+   do { 
         printf(" >>> Are you ready to start your adventure? [Y/N]: ");
         scanf(" %c", &cReady);
 
@@ -244,7 +244,7 @@ int starting_screen(){
             return 0;  // exit game
         } 
         else printf("Invalid choice. Please enter Y or N.\n");
-    }
+    } while(cChoice != 'Y' && cChoice != 'y' && cChoice != 'N' && cChoice != 'n');
 }
 
 
@@ -268,19 +268,9 @@ void pauseMenu(int nHealth, int nScore){
         printf(">>> Enter your choice [1/2]: ");
         scanf("%d", &nChoice);
 
-        if(nChoice == 1){
-            flag = 0;
-            break;
-        }
-        else if(nChoice == 2){
-            checkStats(nHealth, nScore);
-            flag = 0;
-            pauseMenu(nHealth, nScore);
-        } 
-        else {
-            printf("Invalid choice.\n");
-            break;
-        }   
+        if (nChoice == 1) flag = 0;
+        else if(nChoice == 2) checkStats(nHealth, nScore);
+        else printf("Invalid choice.\n"); 
     }
 }
 
@@ -310,7 +300,7 @@ int room_one(int *nHealth, int *nScore){
     printf("\t /                                             _ -           \\\n");
     printf("\t/   -_- _ -             _- _---                       -_-  -_ \\\n\n");                                                 
 
-    while(1){
+    do {
         printf("  [1] Go to the left path.\n");
         printf("  [2] Go to the right path.\n\n");
 
@@ -320,7 +310,8 @@ int room_one(int *nHealth, int *nScore){
         if(nChoice == 1) return 1;
         else if(nChoice == 2) return 2;
         else printf("There are only two paths. Make a decision.\n");
-    }
+      
+    } while (nChoice != 1 && nChoice != 2);
 }
 
 // 2ND ROOM - LOSE HEALTH
@@ -350,7 +341,7 @@ void room_three(int *nHealth, int *nScore, int *nPickedGem){
     *nPickedGem = 0; // to see if the gem was picked up
 
     // ask about picking up the gem
-    while(1){
+   do {
         printf("Do you want to pick it up?\n\n");
         printf("  [1] Pick it up\n");
         printf("  [2] Ignore it\n\n");
@@ -373,14 +364,10 @@ void room_three(int *nHealth, int *nScore, int *nPickedGem){
             printf("\t\t *     .      \\/  x   .*    . \n\n");
 
             printf("\nYou picked up the shiny object and gained 5 points!\n");
-            break;
-        } else if(nChoice == 2){
-            printf("\nYou walk past the shiny object.\n");
-            break;
-        } else {
-            printf("\nInvalid choice. Please select 1 or 2.\n");
-        }
-    }
+        } else if(nChoice == 2) printf("\nYou walk past the shiny object.\n");
+        else printf("\nInvalid choice. Please select 1 or 2.\n");
+    } while (nChoice != 1 && nChoice != 2);
+  
         printf("\nYou continue on deeper into the cave...\n");
 
         pauseMenu(*nHealth, *nScore);
@@ -403,7 +390,7 @@ void room_four(int *nHealth, int *nScore, int *nPickedGem){
     int nChoice;
     int nTorch = 0;
 
-    while(1){
+    do{
         printf("  [1] Take the boat\n");
         printf("  [2] Swim across\n\n");
         printf(">>> Enter your choice [1/2]: ");
@@ -417,7 +404,7 @@ void room_four(int *nHealth, int *nScore, int *nPickedGem){
             printf("\nYou swam across but lost 20 health due to exhaustion.\n");
             break;
         } else printf("\nInvalid choice. Please enter 1 or 2.\n");
-    }
+    } while (nChoice != 1 && nChoice != 2);
 
     pauseMenu(*nHealth, *nScore);
     // PASS ADDRESS &torch
@@ -431,8 +418,6 @@ void room_five(int *nHealth, int *nScore, int *nTorch, int *nPickedGem){
     printf("\n==========================================================================\n\n");
     printf("You enter a well-lit room.\n"); 
     printf("You see a torch on the wall.\n\n");
-
-    // torch
     printf("\t      |\\\n");
     printf("\t      / \\\n");
     printf("\t      \\|/\n");
@@ -448,7 +433,7 @@ void room_five(int *nHealth, int *nScore, int *nTorch, int *nPickedGem){
     printf("\t        //\\\\\n");
     printf("\t         //\\\n\n");
 
-    while(1){
+    do {
         // Torch decision
         printf("Would you like to take the torch?\n\n");
         printf("  [1] Yes\n");
@@ -459,29 +444,27 @@ void room_five(int *nHealth, int *nScore, int *nTorch, int *nPickedGem){
         if(nChoice == 1){
             printf("\nYou took the torch.\n");
             *nTorch = 1;
-                pauseMenu(*nHealth, *nScore);
+            pauseMenu(*nHealth, *nScore);
             printf("You move on, the light helps a lot...\n");
             room_six(nHealth, nScore, nTorch, nPickedGem);
             return;
         } 
         else if(nChoice == 2){
             printf("\nYou move on, ignoring the torch.\n");
+            *nTorch = 0;
             pauseMenu(*nHealth, *nScore);
             printf("It gets harder to see as you continue on...\n");
             room_six(nHealth, nScore, nTorch, nPickedGem);
-            *nTorch = 0;
             return;
         } 
         else printf("\nInvalid choice. Please enter 1 or 2.\n\n");
-    }       
+    } while (nChoice != 1 && nChoice != 2);       
 }
 
 // 6TH ROOM - BATS
 void room_six(int *nHealth, int *nScore, int *nTorch, int *nPickedGem){ 
     printf("\n==========================================================================\n\n");
     printf("You entered a very dark room...\n\n");
-
-    // bat
     printf("....._      \n");
     printf(" `.   ``-.                               .-----.._\n");
     printf("   `,     `-.                          .:      /`\n");
@@ -498,14 +481,11 @@ void room_six(int *nHealth, int *nScore, int *nTorch, int *nPickedGem){
     printf("                      :          _/ \n");
     printf("                      :    _..-``\n");
     printf("                      l--``\n\n");
-
     printf(" !!! You are being swarmed by bats !!! \n\n");
 
     if(*nTorch){
-            *nScore += 5;
+        *nScore += 5;
         printf("Luckily, you have a torch to scare them away.\n\n");
-
-        // torch in hand
         printf("             ...  \n");
         printf("          :::;(;:::  \n");
         printf("        .::;.) );:::.  \n");
@@ -521,18 +501,16 @@ void room_six(int *nHealth, int *nScore, int *nTorch, int *nPickedGem){
         printf("          _.\\_)__ )  \n");
         printf("        _   (__ )   \n");
         printf("          `' -\\#/'    \n\n");
-        
         printf("The bats flee from the light of your torch.\n\n");
         printf("You gained 5 points!\n");
-
-            pauseMenu(*nHealth, *nScore);
+      
+        pauseMenu(*nHealth, *nScore);
     } else {
-            *nHealth -= 15;
+        *nHealth -= 15;
         printf("Without a torch, the bats attack you! \n");
         printf("You silently regret not taking the torch...\n\n");
         printf("You lost 15 health.\n");
-        
-            pauseMenu(*nHealth, *nScore);
+        pauseMenu(*nHealth, *nScore);
     }
     room_seven(nHealth, nScore, nPickedGem); 
 }
@@ -606,7 +584,7 @@ void room_eight(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEnd
     printf(" |\" .  |  :  .  |\n");
     printf(" |   _;----.___|\n\n");
 
-    while(1){
+    do {
         printf("Do you want to open the door?\n\n");
         printf("  [1] Yes\n");
         printf("  [2] No\n\n");
@@ -619,25 +597,17 @@ void room_eight(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEnd
                 printf("You unlocked the door using the key!\n");
                 printf("You may proceed through the door.\n");
 
-                    pauseMenu(*nHealth, *nScore);
-                    room_ten(nHealth, nScore, nPickedGem, nEndingType, &nSword);
-
+                pauseMenu(*nHealth, *nScore);
+                room_ten(nHealth, nScore, nPickedGem, nEndingType, &nSword);
                 return;
             }
             else {
             printf("\nYou try opening the door\n");
             printf("The door seems to be locked...\n\n");
-            printf("You head back and try the other path\n");
-
-                pauseMenu(*nHealth, *nScore);
-                room_seven(nHealth, nScore, nPickedGem);
-
-            break;
             }
         } 
         else if(nChoice == 2){
             printf("\nI'd rather try peeking through...\n");
-
             printf(" ,,,,,,,,,,,,,,,,,,,,\n");
             printf("&&&&&&&&&&&&&&&&&&&&/\n");
             printf("&&&&&&&M|\" \"|M&&&&&&/\n");
@@ -646,17 +616,18 @@ void room_eight(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEnd
             printf("&&&&&&&&M| |M&&&&&&&/\n");
             printf("&&&&&&&&M\\_/M&&&&&&&/\n");
             printf("&&&&&&&&&&&&&&&&&&&&/\n\n");
-
             printf("You see nothing...\n");
-            printf("You head back and try the other path.\n");
-
-                pauseMenu(*nHealth, *nScore);
-                room_seven(nHealth, nScore, nPickedGem);
-                
-            break;
         } 
-        else printf("\nInvalid choice. Please enter 1 or 2.\n");
-    }
+        else {
+          printf("\nInvalid choice. Please enter 1 or 2.\n");
+          continue;
+        }
+
+        printf("You head back and try the other path.\n");
+        pauseMenu(*nHealth, *nScore);
+        room_seven(nHealth, nScore, nPickedGem);
+      
+    } while (nChoice != 1 && nChoice != 2);
 }
 
 void room_nine(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEndingType){ 
@@ -689,7 +660,7 @@ void room_nine(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEndi
 
     printf("You notice something glistening on the edge of the cliff\n\n");
 
-    while(1){  
+    do {  
         printf("Do you want to take the risk and climb up?\n\n");
         printf("  [1] Yes\n");
         printf("  [2] No\n\n");
@@ -702,7 +673,6 @@ void room_nine(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEndi
                 *nEndingType = 1;
                 // you died
                 endingScene(nHealth, nScore, nEndingType, 0);
-                break;
             }
             printf("\n! A rock tumbled down on your way up !\n\n");
 
@@ -711,13 +681,10 @@ void room_nine(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEndi
             printf("`\\ \\_ ’/\n\n");
 
             printf("You lost 10 health points!\n");
-
             pauseMenu(*nHealth, *nScore);
 
             printf("\n==========================================================================\n\n");
-
             printf("You approach the edge of the cliff...\n\n");
-
             printf("              ~>~...:**         ~:                 \n");
             printf("            *=  .~==.  .*.     ~**~                \n");
             printf("           =. :^.    ~=  ^. :>>.  :>>:             \n");
@@ -734,15 +701,13 @@ void room_nine(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEndi
             printf("                *^:         .**    :^.=~            \n");
             printf("                 :         ^=+     ~=:              \n");
             printf("                    :(.         ==^.               \n\n");
-
             printf("A key!\n\n");
             printf("This might just be the key for the door.\n");
-                *nKey = 1;
-            
+          
+            *nKey = 1;
+          
             pauseMenu(*nHealth, *nScore);
             room_eight(nHealth, nScore, nKey, nPickedGem, nEndingType);
-
-            break;
         }
         else if(nChoice == 2){
             printf("The climb is too risky\n\n");
@@ -781,9 +746,8 @@ void room_nine(int *nHealth, int *nScore, int *nKey, int *nPickedGem, int *nEndi
             
             pauseMenu(*nHealth, *nScore);
             endingScene(nHealth, nScore, nEndingType, 0);
-            break;
         }
-    }
+    } while (nChoice != 1 && nChoice != 2);
 }
 
 void room_ten(int *nHealth, int *nScore, int *nPickedGem, int *nEndingType, int *nSword) {
@@ -1107,4 +1071,5 @@ int main(){
         }
     }
     return 0;
+
 }
